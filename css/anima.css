@@ -1,0 +1,662 @@
+/* ============================================================
+   ANIMA — css/anima.css
+   layers: tokens / base / chrome / sections / motion / reduced
+   ============================================================ */
+
+/* ---------- tokens ---------- */
+:root {
+  --abyss: #060B0D;
+  --tissue: #0E1F22;
+  --biolum: #5EF2D6;
+  --chlorophyll: #9BE8C4;
+  --kelp: #2E5F58;
+  --specimen: #E9F4EE;
+  --slide-label: #7FA396;
+  --hemoglobin: #FF4F5E; /* reserved: appears ONLY in 06 / ANAMNESIS */
+  --nutrient: #FFB35C;
+
+  /* one unit, like cells from one genome */
+  --u: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+  --t--1: calc(var(--u) / 1.333);
+  --t-0: var(--u);
+  --t-1: calc(var(--u) * 1.333);
+  --t-2: calc(var(--u) * 1.777);
+  --t-3: calc(var(--u) * 2.369);
+  --t-4: calc(var(--u) * 3.157);
+  --t-5: calc(var(--u) * 4.209);
+  --t-display: clamp(3.5rem, 11vw, 11rem);
+  --t-mono: clamp(0.6875rem, 0.64rem + 0.18vw, 0.8125rem);
+
+  --s-1: calc(var(--u) * 0.5);
+  --s0: var(--u);
+  --s1: calc(var(--u) * 1.5);
+  --s2: calc(var(--u) * 2.25);
+  --s3: calc(var(--u) * 3.375);
+  --s4: calc(var(--u) * 5.063);
+  --s5: calc(var(--u) * 7.594);
+  --section-pad: clamp(6rem, 18vh, 14rem);
+
+  /* the only five easings allowed */
+  --ease-exhale: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-inhale: cubic-bezier(0.64, 0, 0.78, 0);
+  --ease-breath: cubic-bezier(0.37, 0, 0.63, 1);
+  --ease-flinch: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-swallow: cubic-bezier(0.83, 0, 0.17, 1);
+
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Instrument Sans', -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+
+  color-scheme: dark;
+}
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  background: var(--abyss);
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--t-0);
+  line-height: 1.6;
+  color: var(--specimen);
+  background: var(--abyss);
+  overflow-x: clip;
+  min-height: 100vh;
+}
+
+html.has-amoeba body,
+html.has-amoeba a,
+html.has-amoeba button,
+html.has-amoeba input { cursor: none; }
+
+::selection { background: rgba(94, 242, 214, 0.25); color: var(--specimen); }
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: 2px solid var(--biolum);
+  outline-offset: 3px;
+  box-shadow: 0 0 12px rgba(94, 242, 214, 0.5);
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--s-1); left: var(--s-1);
+  z-index: 60;
+  padding: 0.6em 1em;
+  background: var(--tissue);
+  color: var(--specimen);
+  text-decoration: none;
+  border: 1px solid var(--kelp);
+  transform: translateY(-300%);
+  transition: transform 0.3s var(--ease-exhale);
+}
+.skip-link:focus-visible { transform: translateY(0); }
+
+/* ---------- the organism wrapper: sleep only ----------
+   No permanent transform/filter/will-change here: promoting the whole
+   scroll container to a composited layer costs raster memory and jank.
+   The heartbeat lives in the canvases (membrane rim, finale), not in
+   page geometry. Sleep is a one-time transition at "let go". */
+#organism.asleep {
+  transform: scale(0.96);
+  transform-origin: 50% 40vh;
+  filter: brightness(0.7);
+  transition: transform 4s var(--ease-exhale), filter 4s var(--ease-exhale);
+}
+
+#gut.swallow { animation: swallow 0.25s var(--ease-swallow); }
+@keyframes swallow {
+  50% { transform: scaleY(0.995); }
+}
+
+/* ---------- fixed chrome ---------- */
+.vertebrae {
+  position: fixed;
+  right: clamp(0.5rem, 2vw, 1.75rem);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.vertebrae a {
+  display: grid;
+  place-items: center;
+  width: 44px; height: 28px;
+}
+.vertebrae a::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--kelp);
+  transition: background 0.4s var(--ease-exhale), box-shadow 0.4s var(--ease-exhale), transform 0.3s var(--ease-flinch);
+}
+.vertebrae a:hover::before { transform: scale(1.4); }
+.vertebrae a.active::before {
+  background: var(--biolum);
+  box-shadow: 0 0 10px rgba(94, 242, 214, 0.7);
+}
+
+#amoeba {
+  position: fixed;
+  left: 0; top: 0;
+  z-index: 70;
+  pointer-events: none;
+  display: none;
+}
+html.has-amoeba #amoeba { display: block; }
+
+#afterimage {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: var(--specimen);
+  display: grid;
+  place-items: end center;
+  padding-bottom: 12vh;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s var(--ease-exhale), visibility 0s linear 0.6s;
+}
+#afterimage.on {
+  opacity: 1;
+  visibility: visible;
+  transition: none;
+}
+#afterimage p {
+  color: var(--abyss);
+  opacity: 0;
+  transition: opacity 1s var(--ease-exhale);
+}
+#afterimage.caption-on p { opacity: 0.8; }
+
+/* ---------- sections shared ---------- */
+.sec {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh; /* iOS toolbar-proof */
+  padding: var(--section-pad) clamp(1.25rem, 6vw, 7rem);
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sec-body {
+  position: relative;
+  z-index: 2;
+  max-width: 62ch;
+}
+
+html.anima-ready .sec:not(.sec-membrane) .sec-head,
+html.anima-ready .sec:not(.sec-membrane) .condense,
+html.anima-ready .sec:not(.sec-membrane) .prose,
+html.anima-ready .sec:not(.sec-membrane) .stim-row,
+html.anima-ready .sec:not(.sec-membrane) .feed,
+html.anima-ready .sec:not(.sec-membrane) .lab-note,
+html.anima-ready .sec:not(.sec-membrane) .stage-wrap,
+html.anima-ready .sec:not(.sec-membrane) .credits,
+html.anima-ready .sec:not(.sec-membrane) .colophon-actions {
+  transition: opacity 0.8s var(--ease-exhale), transform 0.8s var(--ease-exhale);
+}
+html.anima-ready .sec:not(.in-view):not(.sec-membrane) .sec-head,
+html.anima-ready .sec:not(.in-view):not(.sec-membrane) .condense,
+html.anima-ready .sec:not(.in-view):not(.sec-membrane) .prose,
+html.anima-ready .sec:not(.in-view):not(.sec-membrane) .stim-row,
+html.anima-ready .sec:not(.in-view):not(.sec-membrane) .feed,
+html.anima-ready .sec:not(.in-view):not(.sec-membrane) .lab-note,
+html.anima-ready .sec:not(.in-view):not(.sec-membrane) .stage-wrap,
+html.anima-ready .sec:not(.in-view):not(.sec-membrane) .credits,
+html.anima-ready .sec:not(.in-view):not(.sec-membrane) .colophon-actions {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.sec-head { margin-bottom: var(--s2); }
+
+.sec-num {
+  color: var(--slide-label);
+  margin-bottom: var(--s0);
+}
+
+.sec-title {
+  font-family: var(--font-display);
+  font-weight: 560;
+  font-size: var(--t-5);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 1;
+  /* cross-medium light: rupture & pulses throw shadows on DOM type */
+  text-shadow:
+    calc((var(--hx, 0.5) - var(--burst-x, 0.5)) * 24px)
+    calc((var(--hy, 0.5) - var(--burst-y, 0.5)) * 18px)
+    18px
+    rgba(94, 242, 214, calc(var(--burst-a, 0) * 0.55));
+}
+.sec-title.is-breathing {
+  font-variation-settings: 'opsz' 144, 'SOFT' var(--soft, 50), 'WONK' 1;
+}
+
+.prose {
+  font-size: var(--t-1);
+  line-height: 1.6;
+  color: var(--specimen);
+  max-width: 62ch;
+  margin-bottom: var(--s2);
+}
+
+.lab-note { color: var(--slide-label); }
+
+/* lab-style buttons — buttons are cells */
+.stim {
+  --px: 50%;
+  --py: 50%;
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--biolum);
+  background: transparent;
+  border: 1px solid var(--kelp);
+  padding: 0.9em 1.4em;
+  min-height: 44px;
+  transition: border-color 0.3s var(--ease-exhale), color 0.3s var(--ease-exhale), transform 0.18s var(--ease-flinch);
+  overflow: hidden;
+  touch-action: manipulation;
+}
+.stim:hover, .stim:focus-visible { border-color: var(--biolum); }
+.stim:active { transform: scale(1.06, 0.92); }
+.stim:disabled {
+  color: var(--slide-label);
+  border-color: rgba(46, 95, 88, 0.45);
+  opacity: 0.55;
+  transform: none;
+}
+.stim:disabled::after { display: none; }
+.stim::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 60px at var(--px) var(--py), rgba(255, 179, 92, 0.35), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-exhale);
+  pointer-events: none;
+}
+.stim.bloom::after { opacity: 1; transition: none; }
+
+/* living-root link underlines (svg injected by js) */
+.root-link {
+  position: relative;
+  color: var(--chlorophyll);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.root-link svg {
+  position: absolute;
+  left: 0; bottom: -0.28em;
+  width: 100%; height: 0.5em;
+  overflow: visible;
+  pointer-events: none;
+}
+.root-link svg path {
+  fill: none;
+  stroke: var(--chlorophyll);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  transition: stroke-dashoffset 0.4s var(--ease-flinch);
+}
+.root-link:hover svg path,
+.root-link:focus-visible svg path { stroke-dashoffset: 0; }
+
+/* ---------- 01 / MEMBRANE ---------- */
+.sec-membrane { padding: 0; }
+.corner-tl { position: absolute; top: var(--s1); left: var(--s1); z-index: 2; color: var(--slide-label); max-width: 60vw; }
+.corner-bl { position: absolute; bottom: var(--s1); left: var(--s1); z-index: 2; }
+.corner-br { position: absolute; bottom: var(--s1); right: var(--s1); z-index: 2; }
+
+.tagline {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--s1) + 6vh);
+  transform: translateX(-50%);
+  z-index: 2;
+  color: var(--slide-label);
+  text-align: center;
+  width: max-content;
+  max-width: 90vw;
+}
+
+.sink {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  color: var(--slide-label);
+}
+.organelle {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--chlorophyll), var(--kelp));
+  animation: sink 4s var(--ease-breath) infinite;
+}
+@keyframes sink {
+  0% { transform: translateY(-8px); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+
+/* ---------- 02 / DRIFT ---------- */
+.sec-drift { display: flex; align-items: center; }
+.sec-drift .stage { background: var(--tissue); }
+.condense {
+  position: relative;
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 60, 'SOFT' 50, 'WONK' 0;
+  font-size: var(--t-3);
+  line-height: 1.25;
+  max-width: 30ch;
+  margin-bottom: var(--s2);
+}
+.condense span {
+  display: inline-block;
+  /* will-change is set by JS just before the condense animation runs —
+     promoting ~75 glyph layers from page load would waste GPU memory */
+}
+.sec-drift .prose { color: var(--slide-label); font-size: var(--t-0); }
+
+/* ---------- 03 / MITOSIS ---------- */
+.sec-mitosis {
+  height: 400vh;
+  padding: 0;
+}
+.sticky-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh; /* iOS toolbar-proof */
+  overflow: clip;
+}
+.goo-wrap {
+  position: absolute;
+  inset: 0;
+  background: var(--abyss);
+  filter: contrast(26);
+  overflow: clip;
+}
+/* the gaussian runs over a quarter-area surface; scale(2) happens outside
+   the filter, so the goo look is identical at ~4x less blur cost */
+.goo-wrap .stage {
+  width: 50%;
+  height: 50%;
+  transform: scale(2);
+  transform-origin: 0 0;
+  filter: blur(7px);
+}
+.sec-mitosis .sec-head {
+  position: absolute;
+  top: var(--section-pad);
+  left: clamp(1.25rem, 6vw, 7rem);
+  z-index: 2;
+}
+#mitosis-counter {
+  position: absolute;
+  bottom: var(--s2);
+  left: clamp(1.25rem, 6vw, 7rem);
+  z-index: 2;
+}
+.lab-note-hint {
+  position: absolute;
+  bottom: var(--s2);
+  right: clamp(1.25rem, 6vw, 7rem);
+  z-index: 2;
+  text-align: right;
+  max-width: 36ch;
+  opacity: 0.65;
+}
+
+/* ---------- 04 / MYCELIUM ---------- */
+.sec-mycelium .sec-body { max-width: 56ch; }
+.sec-mycelium .prose {
+  /* the network's pulses glow through the page */
+  text-shadow:
+    calc((var(--hx, 0.5) - var(--pulse-x, 0.5)) * 12px)
+    calc((var(--hy, 0.5) - var(--pulse-y, 0.5)) * 10px)
+    14px
+    rgba(155, 232, 196, calc(var(--pulse-a, 0) * 0.45));
+}
+.stim-row { margin-bottom: var(--s3); }
+
+/* ---------- 05 / MURMURATION ---------- */
+.sec-murmuration { display: flex; align-items: flex-end; }
+.sec-murmuration .sec-body { padding-bottom: var(--s1); }
+.sec-murmuration .prose { color: var(--slide-label); font-size: var(--t-0); max-width: 48ch; }
+.feed { margin-top: var(--s2); }
+.feed label { display: block; color: var(--slide-label); margin-bottom: var(--s-1); }
+.feed-row { display: flex; gap: var(--s-1); flex-wrap: wrap; }
+.feed input {
+  background: rgba(14, 31, 34, 0.7);
+  border: 1px solid var(--kelp);
+  color: var(--specimen);
+  padding: 0.9em 1.2em;
+  min-height: 44px;
+  width: min(18ch, 100%);
+  flex: 1 1 13rem;
+  max-width: 22rem;
+  text-transform: uppercase;
+}
+.feed input:focus-visible { border-color: var(--biolum); }
+.feed input::placeholder { color: var(--kelp); }
+.feed-hint { color: var(--slide-label); margin-top: var(--s-1); } /* kelp fails 4.5:1 for instruction text */
+
+/* ---------- 06 / ANAMNESIS ---------- */
+.sec-anamnesis { padding-bottom: var(--s3); }
+.stage-wrap {
+  position: relative;
+  height: min(64vh, 640px);
+  border: 1px solid rgba(46, 95, 88, 0.4);
+  overflow: clip;
+}
+.stage-wrap .stage { background: var(--abyss); }
+.heart {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 120px; height: 120px;
+  margin: -60px 0 0 -60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 79, 94, 0.85), rgba(255, 79, 94, 0.12) 55%, transparent 70%);
+  opacity: 0;
+  transition: opacity 2s var(--ease-exhale);
+  pointer-events: none;
+}
+.sec-anamnesis.lit .heart { opacity: 1; }
+.ecg {
+  position: absolute;
+  left: 0; right: 0; bottom: 8%;
+  width: 100%; height: 18%;
+  pointer-events: none;
+}
+.ecg path {
+  fill: none;
+  stroke: var(--hemoglobin);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  opacity: 0.85;
+}
+.annotations { position: absolute; inset: 0; pointer-events: none; }
+.annotations .note {
+  position: absolute;
+  max-width: 24ch;
+  color: var(--slide-label);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.8s var(--ease-exhale), transform 0.8s var(--ease-exhale);
+}
+.annotations .note.show { opacity: 1; transform: translateY(0); }
+.closing {
+  position: absolute;
+  left: 50%; bottom: 28%;
+  transform: translate(-50%, 8px);
+  font-family: var(--font-display);
+  font-size: var(--t-3);
+  font-variation-settings: 'opsz' 100, 'SOFT' 50, 'WONK' 1;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 1.6s var(--ease-exhale), transform 1.6s var(--ease-exhale);
+}
+.closing em { font-style: italic; color: var(--biolum); }
+.sec-anamnesis.replayed .closing { opacity: 1; transform: translate(-50%, 0); }
+.finale-actions {
+  display: flex;
+  gap: var(--s0);
+  flex-wrap: wrap;
+  margin-top: var(--s2);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 1.2s var(--ease-exhale), visibility 0s linear 1.2s;
+}
+.sec-anamnesis.replayed .finale-actions {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 1.2s var(--ease-exhale);
+}
+
+/* ---------- colophon ---------- */
+.sec-colophon {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--s2);
+}
+.credits {
+  --mx: 50%;
+  --my: 50%;
+}
+.credits ul { list-style: none; }
+.credits li { padding: 0.55em 0; color: var(--slide-label); }
+.credits li a { color: var(--chlorophyll); }
+.credits.masked {
+  -webkit-mask-image: radial-gradient(circle 180px at var(--mx) var(--my), black 0%, transparent 70%);
+  mask-image: radial-gradient(circle 180px at var(--mx) var(--my), black 0%, transparent 70%);
+}
+.colophon-actions { display: flex; gap: var(--s0); flex-wrap: wrap; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 700px) {
+  .corner-tl { max-width: 70vw; }
+  .tagline { bottom: calc(var(--s1) + 12vh); }
+  .corner-br { display: none; }
+  .lab-note-hint { display: none; }
+  .vertebrae {
+    left: 50%;
+    right: auto;
+    top: auto;
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    flex-direction: row;
+    gap: 2px;
+    padding: 0.25rem;
+    background: rgba(6, 11, 13, 0.78);
+    border: 1px solid rgba(46, 95, 88, 0.55);
+    border-radius: 8px;
+    backdrop-filter: blur(12px);
+  }
+  .vertebrae a { width: 36px; height: 36px; }
+  .sec { padding-bottom: calc(var(--section-pad) + 4.5rem); }
+  .sec-membrane,
+  .sec-mitosis { padding-bottom: 0; }
+  .feed-row { align-items: stretch; }
+  .feed input { min-width: min(100%, 14rem); }
+  .finale-actions { display: grid; grid-template-columns: 1fr; }
+  .finale-actions .stim,
+  .colophon-actions .stim { width: 100%; }
+  .closing { white-space: normal; text-align: center; width: 90%; }
+}
+
+/* ---------- reduced motion (media query + dormancy toggle) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  #organism.asleep { transform: none; filter: none; opacity: 0.75; transition: opacity 2s; }
+  #gut.swallow { animation: none; }
+  .organelle { animation: none; opacity: 0.8; }
+  .sec-title, .sec-title.is-breathing { font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 1; text-shadow: none; }
+  .sec-mycelium .prose { text-shadow: none; }
+  .condense span { transform: none !important; }
+  #fixate { display: none; }
+  .stim, .root-link svg path, .vertebrae a::before { transition: none; }
+  .stim:active { transform: none; }
+  .root-link svg path { stroke-dashoffset: 0; opacity: 0.55; }
+  #afterimage { display: none; }
+  .goo-wrap, .goo-wrap .stage { filter: none; }
+  html.anima-ready .sec:not(.in-view):not(.sec-membrane) .sec-head,
+  html.anima-ready .sec:not(.in-view):not(.sec-membrane) .condense,
+  html.anima-ready .sec:not(.in-view):not(.sec-membrane) .prose,
+  html.anima-ready .sec:not(.in-view):not(.sec-membrane) .stim-row,
+  html.anima-ready .sec:not(.in-view):not(.sec-membrane) .feed,
+  html.anima-ready .sec:not(.in-view):not(.sec-membrane) .lab-note,
+  html.anima-ready .sec:not(.in-view):not(.sec-membrane) .stage-wrap,
+  html.anima-ready .sec:not(.in-view):not(.sec-membrane) .credits,
+  html.anima-ready .sec:not(.in-view):not(.sec-membrane) .colophon-actions {
+    opacity: 1;
+    transform: none;
+  }
+}
+html.dormant { scroll-behavior: auto; }
+html.dormant #organism.asleep { transform: none; filter: none; opacity: 0.75; transition: opacity 2s; }
+html.dormant #gut.swallow { animation: none; }
+html.dormant .organelle { animation: none; opacity: 0.8; }
+html.dormant .sec-title, html.dormant .sec-title.is-breathing { font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 1; text-shadow: none; }
+html.dormant .sec-mycelium .prose { text-shadow: none; }
+html.dormant .condense span { transform: none !important; }
+html.dormant #fixate { display: none; }
+html.dormant #afterimage { display: none; }
+html.dormant .stim:active { transform: none; }
+html.dormant .goo-wrap, html.dormant .goo-wrap .stage { filter: none; }
+html.dormant .stim, html.dormant .root-link svg path, html.dormant .vertebrae a::before { transition: none; }
+html.dormant .root-link svg path { stroke-dashoffset: 0; opacity: 0.55; }
+html.dormant.anima-ready .sec:not(.in-view):not(.sec-membrane) .sec-head,
+html.dormant.anima-ready .sec:not(.in-view):not(.sec-membrane) .condense,
+html.dormant.anima-ready .sec:not(.in-view):not(.sec-membrane) .prose,
+html.dormant.anima-ready .sec:not(.in-view):not(.sec-membrane) .stim-row,
+html.dormant.anima-ready .sec:not(.in-view):not(.sec-membrane) .feed,
+html.dormant.anima-ready .sec:not(.in-view):not(.sec-membrane) .lab-note,
+html.dormant.anima-ready .sec:not(.in-view):not(.sec-membrane) .stage-wrap,
+html.dormant.anima-ready .sec:not(.in-view):not(.sec-membrane) .credits,
+html.dormant.anima-ready .sec:not(.in-view):not(.sec-membrane) .colophon-actions {
+  opacity: 1;
+  transform: none;
+}

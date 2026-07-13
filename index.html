@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#060B0D">
+  <title>ANIMA ●</title>
+  <meta name="description" content="ANIMA — a living document. It noticed you the moment you arrived.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,100..900,0..100,0..1&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/anima.css?v=20260613">
+</head>
+<body>
+  <a class="skip-link mono" href="#main">SKIP TO CONTENT</a>
+
+  <!-- Fixed chrome lives OUTSIDE #organism: its transform would break position:fixed. -->
+  <nav class="vertebrae" aria-label="Sections">
+    <a href="#membrane" data-spy="membrane"><span class="visually-hidden">01 — Membrane</span></a>
+    <a href="#drift" data-spy="drift"><span class="visually-hidden">02 — Drift</span></a>
+    <a href="#mitosis" data-spy="mitosis"><span class="visually-hidden">03 — Mitosis</span></a>
+    <a href="#mycelium" data-spy="mycelium"><span class="visually-hidden">04 — Mycelium</span></a>
+    <a href="#murmuration" data-spy="murmuration"><span class="visually-hidden">05 — Murmuration</span></a>
+    <a href="#anamnesis" data-spy="anamnesis"><span class="visually-hidden">06 — Anamnesis</span></a>
+    <a href="#colophon" data-spy="colophon"><span class="visually-hidden">Colophon</span></a>
+  </nav>
+
+  <canvas id="amoeba" width="280" height="200" aria-hidden="true"></canvas>
+
+  <div id="afterimage" aria-hidden="true">
+    <p class="mono">IT LIVES IN YOU NOW.</p>
+  </div>
+
+  <div id="organism">
+    <div id="gut">
+      <main id="main">
+
+        <section id="membrane" class="sec sec-membrane" data-module="membrane">
+          <canvas class="stage" aria-hidden="true"></canvas>
+          <h1 class="visually-hidden">ANIMA — it noticed you the moment you arrived.</h1>
+          <p class="lab-label mono corner-tl">SPECIMEN 001 — LIVE CULTURE — DO NOT TAP THE GLASS</p>
+          <p class="tagline mono">IT NOTICED YOU THE MOMENT YOU ARRIVED.</p>
+          <button class="stim mono corner-bl" data-stim="poke">STIMULUS: POKE</button>
+          <div class="sink mono corner-br" aria-hidden="true">
+            <span class="organelle"></span>
+            <span>SCROLL — IT WON'T HURT YOU</span>
+          </div>
+        </section>
+
+        <section id="drift" class="sec sec-drift" data-module="drift">
+          <canvas class="stage" aria-hidden="true"></canvas>
+          <div class="sec-body">
+            <header class="sec-head">
+              <p class="sec-num mono">02 / DRIFT</p>
+              <h2 class="sec-title">It lets you in.</h2>
+            </header>
+            <p class="condense" data-condense="You are inside it now. The current parts around you, and seals — as if you were never here." aria-hidden="true"></p>
+            <p class="visually-hidden">You are inside it now. The current parts around you, and seals — as if you were never here.</p>
+            <p class="prose">Three thousand plankton ride a current that has no author. They do not flee you — they simply refuse to touch you, the way water refuses a hand.</p>
+            <button class="stim mono" data-stim="part">STIMULUS: PART THE STREAM</button>
+          </div>
+        </section>
+
+        <section id="mitosis" class="sec sec-mitosis" data-module="mitosis">
+          <div class="sticky-stage">
+            <div class="goo-wrap" aria-hidden="true">
+              <canvas class="stage"></canvas>
+            </div>
+            <header class="sec-head">
+              <p class="sec-num mono">03 / MITOSIS</p>
+              <h2 class="sec-title">It multiplies.</h2>
+            </header>
+            <p class="lab-note mono" id="mitosis-counter" aria-hidden="true">GENERATION 0 — 1 CELL — T+0:00</p>
+            <p class="lab-note mono lab-note-hint" aria-hidden="true">YOUR SCROLLBAR IS THE TIMELINE. IT DIVIDES WHEN YOU SAY SO.</p>
+            <p class="visually-hidden">As you scroll, one cell pinches and divides — two, four, eight, sixteen — drifting apart into a loose colony. Scroll back up and division reverses.</p>
+          </div>
+        </section>
+
+        <section id="mycelium" class="sec sec-mycelium" data-module="mycelium">
+          <canvas class="stage base" aria-hidden="true"></canvas>
+          <canvas class="stage pulses" aria-hidden="true"></canvas>
+          <div class="sec-body">
+            <header class="sec-head">
+              <p class="sec-num mono">04 / MYCELIUM</p>
+              <h2 class="sec-title">It reaches for you.</h2>
+            </header>
+            <p class="prose glow-host">It cannot see you. It maps you — by warmth, by stillness, by the sugar trail your <a class="root-link" href="#anamnesis">attention</a> leaves behind. Rest your cursor anywhere, and it will decide you are food.</p>
+            <p class="stim-row"><button class="stim mono" data-stim="deposit">DEPOSIT NUTRIENT</button></p>
+            <p class="prose glow-host">Underground, nothing is in a hurry. A root does not chase; it remembers where you were and grows there, arriving long after you have moved on. Patience, weaponized into <a class="root-link" href="#murmuration">geometry</a>.</p>
+            <p class="stim-row"><button class="stim mono" data-stim="deposit">DEPOSIT NUTRIENT</button></p>
+            <p class="prose glow-host">Watch the bright signals race along the finished branches. That is the network talking about you.</p>
+            <p class="stim-row"><button class="stim mono" data-stim="deposit">DEPOSIT NUTRIENT</button></p>
+          </div>
+        </section>
+
+        <section id="murmuration" class="sec sec-murmuration" data-module="murmuration">
+          <canvas class="stage" aria-hidden="true"></canvas>
+          <div class="sec-body">
+            <header class="sec-head">
+              <p class="sec-num mono">05 / MURMURATION</p>
+              <h2 class="sec-title">It forgives you.</h2>
+            </header>
+            <p class="prose">Your cursor is a hawk and four hundred small things know it. Chase them. Then be still — five seconds of mercy — and watch what frightened creatures do with trust.</p>
+            <div class="stim-row">
+              <button class="stim mono" data-stim="startle">STIMULUS: STARTLE</button>
+            </div>
+            <form class="feed" autocomplete="off">
+              <label class="mono" for="feed-input">SAY SOMETHING TO IT</label>
+              <div class="feed-row">
+                <input class="mono" id="feed-input" name="word" type="text" maxlength="12" placeholder="ONE WORD" aria-describedby="feed-hint">
+                <button class="stim mono" type="submit">FEED</button>
+              </div>
+              <p class="mono feed-hint" id="feed-hint">LETTERS AND NUMBERS ONLY. IT WILL SPELL IT BACK.</p>
+              <p class="visually-hidden" id="feed-status" role="status"></p>
+            </form>
+          </div>
+        </section>
+
+        <section id="anamnesis" class="sec sec-anamnesis" data-module="anamnesis">
+          <header class="sec-head">
+            <p class="sec-num mono">06 / ANAMNESIS</p>
+            <h2 class="sec-title">It was watching, too.</h2>
+          </header>
+          <div class="stage-wrap">
+            <canvas class="stage" aria-hidden="true"></canvas>
+            <div class="heart" aria-hidden="true"></div>
+            <svg class="ecg" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              <path d="M0,60 L46,60 L60,53 L72,60 L96,60 L106,16 L116,100 L126,60 L156,60 L170,49 L184,60 L250,60 L296,60 L310,53 L322,60 L346,60 L356,16 L366,100 L376,60 L406,60 L420,49 L434,60 L500,60 L546,60 L560,53 L572,60 L596,60 L606,16 L616,100 L626,60 L656,60 L670,49 L684,60 L750,60 L796,60 L810,53 L822,60 L846,60 L856,16 L866,100 L876,60 L906,60 L920,49 L934,60 L1000,60" pathLength="1000"/>
+            </svg>
+            <div class="annotations mono" aria-hidden="true"></div>
+            <p class="closing">Specimens observed: <em>you.</em></p>
+          </div>
+          <p class="visually-hidden">The organism replays your entire visit — every place your cursor or keyboard focus rested — as a glowing path, annotated like lab notes. It has been studying you all along.</p>
+          <div class="finale-actions">
+            <button class="stim mono" id="fixate" disabled>FIXATE ON THE PULSE — 10S</button>
+            <button class="stim mono" id="keep" disabled>KEEP YOUR SPECIMEN RECORD</button>
+            <button class="stim mono" id="letgo" disabled>LET GO</button>
+            <p class="visually-hidden" id="specimen-status" role="status"></p>
+          </div>
+        </section>
+
+        <footer id="colophon" class="sec sec-colophon" data-module="colophon">
+          <p class="sec-num mono">COLOPHON — FIND THE WORDS WITH YOUR LIGHT</p>
+          <div class="credits" id="credits">
+            <!-- credit lines are tabbable so keyboard users can walk the torch -->
+            <ul class="mono">
+              <li tabindex="0"><a class="root-link" href="#membrane">ANIMA</a> — A LIVING DOCUMENT. SPECIMEN 001.</li>
+              <li tabindex="0">GROWN FROM HTML, CSS AND JAVASCRIPT. NO LIBRARIES. NO EXCEPTIONS.</li>
+              <li tabindex="0">EVERY FRAME COMPUTED IN UNDER 16MS ON A 2020 LAPTOP.</li>
+              <li tabindex="0">TYPE: FRAUNCES · INSTRUMENT SANS · IBM PLEX MONO.</li>
+              <li tabindex="0">YOUR PATH NEVER LEAVES THIS PAGE. NOTHING IS SENT. NOTHING IS STORED.</li>
+              <li tabindex="0">HANDLE WITH CARE. IT IS PROBABLY DREAMING ABOUT YOU.</li>
+            </ul>
+          </div>
+          <div class="colophon-actions">
+            <button class="stim mono" id="lights" aria-pressed="false">TURN ON THE LIGHTS</button>
+            <button class="stim mono" id="dormancy" aria-pressed="false">DORMANCY MODE: OFF</button>
+          </div>
+        </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js?v=20260613-3"></script>
+</body>
+</html>
