@@ -150,7 +150,8 @@ export class Drift {
     g.fillStyle = 'rgba(14,31,34,0.08)';
     g.fillRect(0, 0, this.w, this.h);
 
-    const mx = ctx.pointer.x;
+    // no phantom predator at page center before the pointer is real
+    const mx = ctx.pointerActive ? ctx.pointer.x : -1e4;
     const my = ctx.pointer.y - (this.secTop - ctx.scrollY);
     let sweepX = -1e4, sweepY = 0;
     if (this.sweep >= 0) {

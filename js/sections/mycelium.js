@@ -209,12 +209,13 @@ export class Mycelium {
       if (born.length) this.drawSegments(born, true);
     }
 
-    // resting cursor deposits nutrients (throttled to 6/sec)
+    // resting cursor deposits nutrients (throttled to 6/sec) — but only a
+    // real pointer; the default center position isn't anyone's attention
     this.depositClock += dt;
     if (this.depositClock > 0.16) {
       this.depositClock = 0;
       const my = ctx.pointer.y - this.top();
-      if (my > 0 && my < this.h && ctx.pointer.speed < 60) {
+      if (ctx.pointerActive && my > 0 && my < this.h && ctx.pointer.speed < 60) {
         this.deposit(ctx.pointer.x, my, 2);
       }
     }

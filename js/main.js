@@ -8,8 +8,8 @@ import { Drift } from './sections/drift.js';
 import { Mitosis } from './sections/mitosis.js';
 import { Mycelium } from './sections/mycelium.js';
 import { Murmuration } from './sections/murmuration.js';
-import { Anamnesis } from './sections/anamnesis.js?v=20260613';
-import { Colophon } from './sections/colophon.js?v=20260613';
+import { Anamnesis } from './sections/anamnesis.js';
+import { Colophon } from './sections/colophon.js';
 
 const organism = document.getElementById('organism');
 const gut = document.getElementById('gut');
@@ -22,6 +22,9 @@ try { dormant = localStorage.getItem('anima-dormant') === '1'; } catch (_) { /* 
 const ctx = {
   organism,
   pointer: { x: innerWidth / 2, y: innerHeight / 2, speed: 0 },
+  // The default pointer position is a guess, not a person. Nothing reacts
+  // to it until a real pointer, tap, or keyboard focus proves someone is here.
+  pointerActive: false,
   scrollY: window.scrollY,
   scrollVel: 0,
   vw: innerWidth,
@@ -55,13 +58,24 @@ mq.addEventListener('change', applyCursorMode);
 // ---------- input tracking (listeners store; rAF consumes) ----------
 let lastPX = ctx.pointer.x, lastPY = ctx.pointer.y;
 let lastInputAt = performance.now();
+function pointerSeen() {
+  if (ctx.pointerActive) return;
+  ctx.pointerActive = true;
+  document.documentElement.classList.add('pointer-live');
+}
 document.addEventListener('pointermove', (e) => {
   ctx.pointer.x = e.clientX;
   ctx.pointer.y = e.clientY;
   lastInputAt = performance.now();
+  pointerSeen();
 }, { passive: true });
 document.addEventListener('pointerdown', (e) => {
   lastInputAt = performance.now();
+  // touch has no hover: a tap IS the pointer, so the predator/hawk/roots react
+  ctx.pointer.x = e.clientX;
+  ctx.pointer.y = e.clientY;
+  lastPX = e.clientX; lastPY = e.clientY; // don't count the jump as speed
+  pointerSeen();
   ctx.recorder.event(FLAG.CLICK, e.clientX / ctx.vw, e.clientY / ctx.vh);
 }, { passive: true });
 document.addEventListener('keydown', () => { lastInputAt = performance.now(); }, { passive: true });
@@ -74,6 +88,7 @@ document.addEventListener('focusin', (e) => {
   ctx.recorder.event(FLAG.FOCUS, x, y);
   ctx.pointer.x = r.left + r.width / 2;
   ctx.pointer.y = r.top + r.height / 2;
+  pointerSeen();
 });
 let lastScrollY = window.scrollY;
 window.addEventListener('scroll', () => {
@@ -170,6 +185,25 @@ document.addEventListener('pointerdown', (e) => {
 document.addEventListener('pointerup', () => {
   for (const b of document.querySelectorAll('.stim.bloom')) b.classList.remove('bloom');
 }, { passive: true });
+// keyboard activation blooms too — same nutrient, center of the cell
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const btn = e.target.closest?.('.stim');
+  if (!btn || btn.disabled) return;
+  btn.style.setProperty('--px', '50%');
+  btn.style.setProperty('--py', '50%');
+  btn.classList.add('bloom');
+  setTimeout(() => btn.classList.remove('bloom'), 450);
+});
+
+// ---------- field notes: the engineering, on demand ----------
+for (const toggle of document.querySelectorAll('.fn-toggle')) {
+  const panel = document.getElementById(toggle.getAttribute('aria-controls'));
+  toggle.addEventListener('click', () => {
+    const open = panel.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+}
 
 // ---------- resize (debounced; the only sanctioned layout reads) ----------
 let resizeTimer = 0;
@@ -212,9 +246,15 @@ function schedulePrewarm() {
 }
 schedulePrewarm();
 
-// redraw the hero word once the real font arrives
+// re-render everything typographic once the real fonts arrive: the hero
+// word, the flock's letterform targets, and the cached heading positions
 if (document.fonts?.ready) {
-  document.fonts.ready.then(() => { membrane.fontDirty = true; membrane.staticDirty = true; });
+  document.fonts.ready.then(() => {
+    membrane.fontDirty = true;
+    membrane.staticDirty = true;
+    registry.find((r) => r.id === 'murmuration')?.mod.refreshWord();
+    cacheHeadings();
+  });
 }
 
 // ---------- the single rAF loop ----------
@@ -266,5 +306,7 @@ function frame(now) {
 }
 requestAnimationFrame(frame);
 
-// debug handle (read-only; harmless in production)
-window.__anima = { ctx, registry };
+// debug handle — local development only, never shipped to visitors
+if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+  window.__anima = { ctx, registry };
+}

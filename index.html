@@ -6,24 +6,33 @@
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#060B0D">
   <title>ANIMA ●</title>
-  <meta name="description" content="ANIMA — a living document. It noticed you the moment you arrived.">
+  <meta name="description" content="ANIMA — a living document by Purvang Suvagiya. A soft-body cell, a plankton current, a root network and a murmuration, hand-rolled in vanilla JavaScript. It noticed you the moment you arrived.">
+  <meta name="author" content="Purvang Suvagiya">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ANIMA — a living document">
+  <meta property="og:description" content="Six biological acts in pure vanilla JavaScript — poke it, feed it, and it will show you your own visit back. Built by Purvang Suvagiya.">
+  <meta property="og:image" content="/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,100..900,0..100,0..1&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/anima.css?v=20260613">
+  <link rel="stylesheet" href="css/anima.css">
 </head>
 <body>
   <a class="skip-link mono" href="#main">SKIP TO CONTENT</a>
 
   <!-- Fixed chrome lives OUTSIDE #organism: its transform would break position:fixed. -->
   <nav class="vertebrae" aria-label="Sections">
-    <a href="#membrane" data-spy="membrane"><span class="visually-hidden">01 — Membrane</span></a>
-    <a href="#drift" data-spy="drift"><span class="visually-hidden">02 — Drift</span></a>
-    <a href="#mitosis" data-spy="mitosis"><span class="visually-hidden">03 — Mitosis</span></a>
-    <a href="#mycelium" data-spy="mycelium"><span class="visually-hidden">04 — Mycelium</span></a>
-    <a href="#murmuration" data-spy="murmuration"><span class="visually-hidden">05 — Murmuration</span></a>
-    <a href="#anamnesis" data-spy="anamnesis"><span class="visually-hidden">06 — Anamnesis</span></a>
-    <a href="#colophon" data-spy="colophon"><span class="visually-hidden">Colophon</span></a>
+    <a href="#membrane" data-spy="membrane" data-label="01 · MEMBRANE"><span class="visually-hidden">01 — Membrane</span></a>
+    <a href="#drift" data-spy="drift" data-label="02 · DRIFT"><span class="visually-hidden">02 — Drift</span></a>
+    <a href="#mitosis" data-spy="mitosis" data-label="03 · MITOSIS"><span class="visually-hidden">03 — Mitosis</span></a>
+    <a href="#mycelium" data-spy="mycelium" data-label="04 · MYCELIUM"><span class="visually-hidden">04 — Mycelium</span></a>
+    <a href="#murmuration" data-spy="murmuration" data-label="05 · MURMURATION"><span class="visually-hidden">05 — Murmuration</span></a>
+    <a href="#anamnesis" data-spy="anamnesis" data-label="06 · ANAMNESIS"><span class="visually-hidden">06 — Anamnesis</span></a>
+    <a href="#colophon" data-spy="colophon" data-label="COLOPHON"><span class="visually-hidden">Colophon</span></a>
   </nav>
 
   <canvas id="amoeba" width="280" height="200" aria-hidden="true"></canvas>
@@ -34,14 +43,26 @@
 
   <div id="organism">
     <div id="gut">
-      <main id="main">
+      <main id="main" tabindex="-1">
 
         <section id="membrane" class="sec sec-membrane" data-module="membrane">
           <canvas class="stage" aria-hidden="true"></canvas>
           <h1 class="visually-hidden">ANIMA — it noticed you the moment you arrived.</h1>
           <p class="lab-label mono corner-tl">SPECIMEN 001 — LIVE CULTURE — DO NOT TAP THE GLASS</p>
           <p class="tagline mono">IT NOTICED YOU THE MOMENT YOU ARRIVED.</p>
-          <button class="stim mono corner-bl" data-stim="poke">STIMULUS: POKE</button>
+          <div class="corner-bl fn-up">
+            <div class="fieldnotes">
+              <div class="fn-panel" id="fn-membrane">
+                <div>
+                  <p>A 64-point Verlet soft body. One shared “nervous system” scalar sets its breath rate — scroll fast and the whole page breathes faster with it.</p>
+                  <p>Poking cuts the springs for 900 ms; the letters fly as closed-form ballistic bodies, then swim home. No physics library — about 120 lines.</p>
+                  <p>The rim glow is three layered strokes, not shadowBlur: same light, a fraction of the paint cost.</p>
+                </div>
+              </div>
+              <button class="fn-toggle mono" aria-expanded="false" aria-controls="fn-membrane">FIELD NOTES</button>
+            </div>
+            <button class="stim mono" data-stim="poke">STIMULUS: POKE</button>
+          </div>
           <div class="sink mono corner-br" aria-hidden="true">
             <span class="organelle"></span>
             <span>SCROLL — IT WON'T HURT YOU</span>
@@ -59,6 +80,16 @@
             <p class="visually-hidden">You are inside it now. The current parts around you, and seals — as if you were never here.</p>
             <p class="prose">Three thousand plankton ride a current that has no author. They do not flee you — they simply refuse to touch you, the way water refuses a hand.</p>
             <button class="stim mono" data-stim="part">STIMULUS: PART THE STREAM</button>
+            <div class="fieldnotes">
+              <button class="fn-toggle mono" aria-expanded="false" aria-controls="fn-drift">FIELD NOTES</button>
+              <div class="fn-panel" id="fn-drift">
+                <div>
+                  <p>~3,000 particles ride the curl of a value-noise field. Curl is divergence-free, so the current never clumps and never dies.</p>
+                  <p>Your cursor repels with an inverse-square falloff — the stream parts and seals like water around a predator.</p>
+                  <p>The copy above condensed out of the same noise field, letter by letter.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -70,6 +101,16 @@
             <header class="sec-head">
               <p class="sec-num mono">03 / MITOSIS</p>
               <h2 class="sec-title">It multiplies.</h2>
+              <div class="fieldnotes">
+                <button class="fn-toggle mono" aria-expanded="false" aria-controls="fn-mitosis">FIELD NOTES</button>
+                <div class="fn-panel" id="fn-mitosis">
+                  <div>
+                    <p>Scroll position is the only clock. Scrub backwards and division reverses — every frame is a pure function of progress.</p>
+                    <p>The gooey merge is the GPU compositor: canvas blur plus wrapper contrast. Zero per-pixel JavaScript.</p>
+                    <p>The canvas renders at half resolution; the blur eats the detail anyway.</p>
+                  </div>
+                </div>
+              </div>
             </header>
             <p class="lab-note mono" id="mitosis-counter" aria-hidden="true">GENERATION 0 — 1 CELL — T+0:00</p>
             <p class="lab-note mono lab-note-hint" aria-hidden="true">YOUR SCROLLBAR IS THE TIMELINE. IT DIVIDES WHEN YOU SAY SO.</p>
@@ -88,9 +129,19 @@
             <p class="prose glow-host">It cannot see you. It maps you — by warmth, by stillness, by the sugar trail your <a class="root-link" href="#anamnesis">attention</a> leaves behind. Rest your cursor anywhere, and it will decide you are food.</p>
             <p class="stim-row"><button class="stim mono" data-stim="deposit">DEPOSIT NUTRIENT</button></p>
             <p class="prose glow-host">Underground, nothing is in a hurry. A root does not chase; it remembers where you were and grows there, arriving long after you have moved on. Patience, weaponized into <a class="root-link" href="#murmuration">geometry</a>.</p>
-            <p class="stim-row"><button class="stim mono" data-stim="deposit">DEPOSIT NUTRIENT</button></p>
+            <p class="stim-row"><button class="stim mono" data-stim="deposit">FEED IT AGAIN</button></p>
             <p class="prose glow-host">Watch the bright signals race along the finished branches. That is the network talking about you.</p>
-            <p class="stim-row"><button class="stim mono" data-stim="deposit">DEPOSIT NUTRIENT</button></p>
+            <p class="stim-row"><button class="stim mono" data-stim="deposit">ONE LAST FEEDING</button></p>
+            <div class="fieldnotes">
+              <button class="fn-toggle mono" aria-expanded="false" aria-controls="fn-mycelium">FIELD NOTES</button>
+              <div class="fn-panel" id="fn-mycelium">
+                <div>
+                  <p>Space-colonization growth: food attracts the nearest root tip, and reached food is consumed. Your resting cursor drops food.</p>
+                  <p>The canvas is never cleared — each frame paints only newborn segments, so the cost stays flat at 6,000 nodes.</p>
+                  <p>The bright pulses walk each branch’s parent chain back toward the root.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -114,6 +165,16 @@
               <p class="mono feed-hint" id="feed-hint">LETTERS AND NUMBERS ONLY. IT WILL SPELL IT BACK.</p>
               <p class="visually-hidden" id="feed-status" role="status"></p>
             </form>
+            <div class="fieldnotes">
+              <button class="fn-toggle mono" aria-expanded="false" aria-controls="fn-murmuration">FIELD NOTES</button>
+              <div class="fn-panel" id="fn-murmuration">
+                <div>
+                  <p>400 boids — separation, alignment, cohesion — with neighbors found through a spatial hash, not an O(n²) scan.</p>
+                  <p>Hold still for five seconds and the flock collapses onto letterform targets harvested from an offscreen canvas.</p>
+                  <p>Fear and trust are the same three rules with different weights.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -133,10 +194,21 @@
           </div>
           <p class="visually-hidden">The organism replays your entire visit — every place your cursor or keyboard focus rested — as a glowing path, annotated like lab notes. It has been studying you all along.</p>
           <div class="finale-actions">
+            <button class="stim mono" id="replay-visit" disabled>WATCH IT AGAIN</button>
             <button class="stim mono" id="fixate" disabled>FIXATE ON THE PULSE — 10S</button>
             <button class="stim mono" id="keep" disabled>KEEP YOUR SPECIMEN RECORD</button>
             <button class="stim mono" id="letgo" disabled>LET GO</button>
             <p class="visually-hidden" id="specimen-status" role="status"></p>
+          </div>
+          <div class="fieldnotes">
+            <button class="fn-toggle mono" aria-expanded="false" aria-controls="fn-anamnesis">FIELD NOTES</button>
+            <div class="fn-panel" id="fn-anamnesis">
+              <div>
+                <p>Your cursor, keyboard focus and scroll were sampled at 20 Hz into a ring buffer from the moment you arrived.</p>
+                <p>The replay compresses your visit to twelve seconds but keeps your hesitations proportionally long — hesitation must read as hesitation.</p>
+                <p>The specimen record is serialized to SVG entirely in your browser. Nothing was sent anywhere. Reload, and it forgets you.</p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -153,6 +225,15 @@
               <li tabindex="0">HANDLE WITH CARE. IT IS PROBABLY DREAMING ABOUT YOU.</li>
             </ul>
           </div>
+          <div class="handler mono">
+            <p class="handler-label">SPECIMEN HANDLER</p>
+            <p class="handler-name">Purvang Suvagiya</p>
+            <ul class="handler-links">
+              <li><a class="stim mono" href="https://github.com/purvangpatel03" target="_blank" rel="noopener">GITHUB ↗</a></li>
+              <li><a class="stim mono" href="https://purvang.vercel.app/" target="_blank" rel="noopener">PORTFOLIO ↗</a></li>
+            </ul>
+            <p class="handler-note">GROWN WITH AI ASSISTANCE — EVERY CELL REVIEWED BY HAND.</p>
+          </div>
           <div class="colophon-actions">
             <button class="stim mono" id="lights" aria-pressed="false">TURN ON THE LIGHTS</button>
             <button class="stim mono" id="dormancy" aria-pressed="false">DORMANCY MODE: OFF</button>
@@ -163,6 +244,6 @@
     </div>
   </div>
 
-  <script type="module" src="js/main.js?v=20260613-3"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

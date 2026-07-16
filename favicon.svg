@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- ANIMA — a single cell, breathing -->
+  <rect width="64" height="64" rx="14" fill="#060B0D"/>
+  <path d="M32,11 C44,10 53,20 52,32 C51,45 44,53 31,52 C19,51 11,43 12,31 C13,19 21,12 32,11 Z"
+        fill="#0E1F22" stroke="#5EF2D6" stroke-width="5" opacity="0.28"/>
+  <path d="M32,11 C44,10 53,20 52,32 C51,45 44,53 31,52 C19,51 11,43 12,31 C13,19 21,12 32,11 Z"
+        fill="none" stroke="#5EF2D6" stroke-width="2.4"/>
+  <circle cx="26" cy="26" r="3.2" fill="#9BE8C4" opacity="0.9"/>
+</svg>

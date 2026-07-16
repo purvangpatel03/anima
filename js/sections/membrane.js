@@ -38,7 +38,7 @@ export class Membrane {
       this.rupture(clientX, y);
     };
     this.canvas.parentElement.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('a, button')) return;
+      if (e.target.closest('a, button, .fieldnotes')) return;
       poke(e.clientX, e.clientY);
     });
     sec.querySelector('[data-stim="poke"]').addEventListener('click', () => {
@@ -172,7 +172,8 @@ export class Membrane {
     const breath = ctx.nervous.breath;
     const targetR = this.R * (1 + 0.05 * (breath * 2 - 1));
     const k = 14 * this.healing;
-    const mx = ctx.pointer.x;
+    // until a real pointer exists, nothing touches the skin
+    const mx = ctx.pointerActive ? ctx.pointer.x : -1e5;
     const my = ctx.pointer.y - this.top();
 
     for (let i = 0; i < N; i++) {

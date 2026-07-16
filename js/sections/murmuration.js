@@ -28,11 +28,33 @@ export class Murmuration {
       this.startle();
       this.ctx.recorder.event(FLAG.STARTLE, 0.5, 0.5);
     });
-    sec.querySelector('form.feed').addEventListener('submit', (e) => {
+    const form = sec.querySelector('form.feed');
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
       const input = sec.querySelector('#feed-input');
+      const hint = sec.querySelector('#feed-hint');
+      const status = sec.querySelector('#feed-status');
       const word = (input.value || '').replace(/[^A-Za-z0-9 ]/g, '').trim().toUpperCase().slice(0, 12);
-      if (!word) return;
+      if (!word) {
+        // a refused meal must be felt: amber shudder + spoken + spelled out
+        input.classList.remove('reject');
+        form.classList.remove('reject');
+        void input.offsetWidth; // restart the animation
+        input.classList.add('reject');
+        form.classList.add('reject');
+        hint.textContent = 'IT ONLY EATS LETTERS AND NUMBERS. TRY A REAL WORD.';
+        if (status) status.textContent = 'THE FLOCK REFUSED IT. LETTERS AND NUMBERS ONLY.';
+        clearTimeout(this._rejectTimer);
+        this._rejectTimer = setTimeout(() => {
+          input.classList.remove('reject');
+          form.classList.remove('reject');
+          hint.textContent = 'LETTERS AND NUMBERS ONLY. IT WILL SPELL IT BACK.';
+        }, 2400);
+        return;
+      }
+      input.classList.remove('reject');
+      form.classList.remove('reject');
+      hint.textContent = 'LETTERS AND NUMBERS ONLY. IT WILL SPELL IT BACK.';
       this.word = word;
       this.harvestTargets();
       this.staticDrawn = false; // reduced-motion: redraw the new word once
@@ -42,7 +64,6 @@ export class Murmuration {
       this.ctx.nervous.impulse(0.25);
       input.value = '';
       // the canvas is aria-hidden; tell assistive tech what just happened
-      const status = sec.querySelector('#feed-status');
       if (status) status.textContent = `THE FLOCK IS SPELLING "${word}".`;
     });
     this.resize();
@@ -130,6 +151,14 @@ export class Murmuration {
     }
   }
 
+  // Fonts load after boot: re-harvest so the flock spells in Instrument
+  // Sans letterforms, not whatever fallback was resident at construction.
+  refreshWord() {
+    this.harvestTargets();
+    this.staticDrawn = false;
+    if (this.ctx.reduced()) this.settleAtTargets();
+  }
+
   beginForming(immediate) {
     this.forming = true;
     if (immediate) this.still = 5;
@@ -163,7 +192,7 @@ export class Murmuration {
 
     const mx = ctx.pointer.x;
     const my = ctx.pointer.y - this.top();
-    const hawkActive = my > -100 && my < this.h + 100;
+    const hawkActive = ctx.pointerActive && my > -100 && my < this.h + 100;
 
     // stillness is mercy
     if (ctx.pointer.speed < 8) this.still += dt;

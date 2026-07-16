@@ -56,7 +56,7 @@ export class Colophon {
   wake() { this.cacheRect(); }
 
   update() {
-    if (!this.awake || this.lit || this.ctx.reduced()) return;
+    if (!this.awake || this.lit || this.ctx.reduced() || !this.ctx.pointerActive) return;
     if (!this._rect) this.cacheRect();
     const r = this._rect;
     const top = r.top - this.ctx.scrollY;

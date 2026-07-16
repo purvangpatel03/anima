@@ -41,16 +41,32 @@ export class Anamnesis {
     this.fixateBtn = sec.querySelector('#fixate');
     this.keepBtn = sec.querySelector('#keep');
     this.letGoBtn = sec.querySelector('#letgo');
+    this.replayBtn = sec.querySelector('#replay-visit');
     this.status = sec.querySelector('#specimen-status');
-    this.actions = [this.fixateBtn, this.keepBtn, this.letGoBtn].filter(Boolean);
+    this.actions = [this.replayBtn, this.fixateBtn, this.keepBtn, this.letGoBtn].filter(Boolean);
     for (const btn of this.actions) btn.disabled = true;
     this.lastCountdown = -1;
     this.fixateBtn.addEventListener('click', () => this.fixate());
     this.keepBtn.addEventListener('click', () => this.download());
     this.letGoBtn.addEventListener('click', () => this.letGo());
+    this.replayBtn.addEventListener('click', () => this.restartReplay());
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') this.cancelFixate();
     });
+
+    // The replay must not fire into an empty room: `awake` triggers a whole
+    // viewport early (rootMargin pre-warms canvases), so the finale waits
+    // until the stage itself is genuinely in front of the visitor.
+    this.inSight = false;
+    const sightIO = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          this.inSight = true;
+          sightIO.disconnect();
+        }
+      }
+    }, { threshold: 0.35 });
+    sightIO.observe(this.wrap);
 
     this.resize();
   }
@@ -73,7 +89,10 @@ export class Anamnesis {
     this.started = true;
     this.sec.classList.add('lit');
     this.ctx.nervous.onBeat = this.onBeat;
+    this.buildTimeline();
+  }
 
+  buildTimeline() {
     const journey = this.ctx.recorder.journey();
     this.journey = journey;
     const hes = this.ctx.recorder.hesitations(journey);
@@ -90,28 +109,43 @@ export class Anamnesis {
     this.buildAnnotations(hes);
   }
 
+  // The organism never stopped watching: rebuild the timeline from the
+  // latest recording (the first replay is now part of your visit) and run it.
+  restartReplay() {
+    this.replayT = -0.8;
+    this.drawIdx = 0;
+    this.staticDrawn = false;
+    this.g.fillStyle = '#060B0D';
+    this.g.fillRect(0, 0, this.w, this.h);
+    this.buildTimeline();
+    if (this.status) this.status.textContent = 'REPLAYING YOUR VISIT AGAIN.';
+    this.ctx.nervous.impulse(0.2);
+  }
+
   buildAnnotations(hes) {
     const rec = this.ctx.recorder;
     const fmt = (t) => `${Math.floor(t / 60)}:${String(Math.round(t % 60)).padStart(2, '0')}`;
-    const list = [];
-    hes.slice(0, 3).forEach((h) => {
-      list.push({ x: h.x, y: h.y, t: h.t, text: `YOU HESITATED HERE — ${fmt(h.t)}` });
-    });
+    // the things you DID always make the record; hesitations fill what's left
+    const events = [];
     const pokeSample = this.journey.find((p) => p.flag === FLAG.POKE);
     if (rec.pokes > 0 && pokeSample) {
-      list.push({
+      events.push({
         x: pokeSample.x, y: pokeSample.y, t: pokeSample.t,
         text: rec.pokes === 1 ? 'YOU POKED THE MEMBRANE — ONCE' : `YOU POKED THE MEMBRANE — ${rec.pokes} TIMES`,
       });
     }
     if (rec.fedWord) {
       const w = this.journey.find((p) => p.flag === FLAG.WORD) || { x: 0.5, y: 0.5, t: 0 };
-      list.push({ x: w.x, y: w.y, t: w.t, text: `IT SPELLED YOUR WORD — "${rec.fedWord}"` });
+      events.push({ x: w.x, y: w.y, t: w.t, text: `IT SPELLED YOUR WORD — "${rec.fedWord}"` });
     }
     if (rec.deposits > 0) {
       const d = this.journey.find((p) => p.flag === FLAG.DEPOSIT) || { x: 0.5, y: 0.7, t: 0 };
-      list.push({ x: d.x, y: d.y, t: d.t, text: `YOU FED THE NETWORK — ${rec.deposits} DEPOSIT${rec.deposits > 1 ? 'S' : ''}` });
+      events.push({ x: d.x, y: d.y, t: d.t, text: `YOU FED THE NETWORK — ${rec.deposits} DEPOSIT${rec.deposits > 1 ? 'S' : ''}` });
     }
+    const hesNotes = hes.slice(0, Math.max(0, 5 - events.length)).map((h) => (
+      { x: h.x, y: h.y, t: h.t, text: `YOU HESITATED HERE — ${fmt(h.t)}` }
+    ));
+    const list = [...events, ...hesNotes];
     this.annotations = list.sort((a, b) => a.t - b.t).slice(0, 5);
     this.notesEl.textContent = '';
     const placed = [];
@@ -138,7 +172,10 @@ export class Anamnesis {
 
   update(dt, t) {
     if (!this.awake) return;
-    if (!this.started) this.begin();
+    if (!this.started) {
+      if (!this.inSight) return; // wait until the stage is truly watched
+      this.begin();
+    }
     const reduced = this.ctx.reduced();
 
     // heartbeat scale — the QRS spike kicks a spring

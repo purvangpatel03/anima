@@ -5,12 +5,11 @@ export const FLAG = {
   NONE: 0,
   CLICK: 1,
   POKE: 2,
-  RUPTURE: 3,
-  DEPOSIT: 4,
-  STARTLE: 5,
-  WORD: 6,
-  SECTION: 7,
-  FOCUS: 8,
+  DEPOSIT: 3,
+  STARTLE: 4,
+  WORD: 5,
+  SECTION: 6,
+  FOCUS: 7,
 };
 
 export class Recorder {

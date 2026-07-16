@@ -5,6 +5,11 @@
 A single-page living organism built in pure vanilla HTML, CSS, and JavaScript.
 No libraries. No build step. No exceptions.
 
+Grown by [Purvang Suvagiya](https://purvang.vercel.app/)
+([GitHub](https://github.com/purvangpatel03)) with AI assistance —
+every cell reviewed by hand. Each act has an in-page **FIELD NOTES** toggle
+explaining how it is engineered.
+
 ## Run it
 
 Any static server from this folder:
