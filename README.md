@@ -1,55 +1,28 @@
-# ANIMA
+# Anima — A Garden That Remembers You
 
-*It noticed you the moment you arrived.*
+An editorial botanical world built around the journey from a seed to an impossible bloom. Deep forest green, pistachio, translucent petals and pale pink give this experience its own identity.
 
-A single-page living organism built in pure vanilla HTML, CSS, and JavaScript.
-No libraries. No build step. No exceptions.
+## Experience
 
-Grown by [Purvang Suvagiya](https://purvang.vercel.app/)
-([GitHub](https://github.com/purvangpatel03)) with AI assistance —
-every cell reviewed by hand. Each act has an in-page **FIELD NOTES** toggle
-explaining how it is engineered.
+- Original imagegen glass botanical specimen, delivered as a 138 KB WebP; full PNG retained.
+- A living Three.js specimen unfurls with scrolling and closes when the visitor returns.
+- The specimen becomes a small companion between chapters and hops with scroll direction.
+- An original eight-second microscopic film, with poster and pause control.
+- Visitors can plant memories in a garden and download an SVG specimen containing their visit's chapter/memory counts.
+- All visit state stays in memory in the current page. No analytics, storage or external data transmission.
+- Responsive narration, keyboard controls, reduced motion, video pausing and a non-WebGL fallback.
+- `made with Purvang` links to https://purvang.vercel.app/ in the footer.
 
-## Run it
+## Run
 
-Any static server from this folder:
-
-```bash
-python3 -m http.server 4173
-# → http://localhost:4173
+```sh
+python3 -m http.server 4501 --bind 127.0.0.1
 ```
 
-(Opening `index.html` directly won't work — ES modules require a server.)
+Serve over HTTP for ES modules. No build step. Three.js and fonts are vendored locally. The active entry point is `js/main.js`; `js/experience.js` owns the new interaction system. Earlier section modules are retained but no longer loaded.
 
-## What it is
+## Assets and validation
 
-You don't visit ANIMA — you intrude on it. Six biological acts:
+Exact built-in imagegen prompt: [assets/ASSETS.md](assets/ASSETS.md). Film provenance: [assets/VIDEO.md](assets/VIDEO.md). No stock media was used.
 
-1. **MEMBRANE** — a soft-body cell breathing at 12bpm, the word ANIMA living
-   inside it. Poke it and it ruptures, spills, and heals — differently every time.
-2. **DRIFT** — thousands of plankton in a divergence-free current that parts
-   around your cursor like water around a predator.
-3. **MITOSIS** — your scrollbar is the timeline of cell division. Scrub
-   backwards and division reverses.
-4. **MYCELIUM** — a root network grown by space colonization, bending toward
-   the nutrients your attention deposits.
-5. **MURMURATION** — 400 boids that fear your cursor, then forgive you by
-   spelling a word. Feed them a word of your own.
-6. **ANAMNESIS** — the inversion. The organism replays your entire visit,
-   annotated ("you hesitated here — 0:34"), names you taxonomically, and
-   offers you your specimen record as a downloadable SVG. Then it lets you go.
-
-## Engineering notes
-
-- One `requestAnimationFrame` loop; sections sleep entirely off-screen.
-- One broadcast "agitation" scalar drives breath rate, the variable-font SOFT
-  axis, particle behavior, and the sitewide systole — one nervous system.
-- Canvas 2D only: Verlet soft body, curl-noise flow field, GPU-composited
-  gooey metaballs (blur+contrast), space colonization with a never-cleared
-  persistent buffer, spatial-hashed boids.
-- `prefers-reduced-motion` (and the DORMANCY toggle) swaps every act for a
-  designed static state — the reduced-motion visitor still gets the
-  inversion, the annotations, and the specimen slide.
-- Every cursor-driven moment has a focusable keyboard twin, and focus history
-  feeds the finale exactly like cursor history.
-- Your path never leaves the page. Nothing is sent. Nothing is stored.
+Source-level checks cover local assets, fonts, anchors, unique IDs, CSS/JS syntax, reversible botanical geometry, scroll direction, motion/video controls, memory planting and SVG download. Media passed FFmpeg decode verification. Browser visual testing was blocked by a saved browser permission setting and has not been completed.
