@@ -1,4 +1,6 @@
 /** Scroll, media and WebGL choreography. Native scrolling is the only timeline. */
+import { createFieldStudy } from './field-study.js';
+
 export function createExperience(THREE, mode) {
     const root = document.documentElement;
     const reduceQuery = matchMedia('(prefers-reduced-motion: reduce)');
@@ -194,11 +196,13 @@ export function createExperience(THREE, mode) {
     } requestFrame(); }
     addEventListener('resize', resize, { passive: true });
     resize();
+    const fieldStudy = createFieldStudy(requestFrame);
     let active = -1;
     function frame(now) {
         frameId = 0;
         const dt = Math.min((now - lastTime) / 16.667, 2) || 1;
         lastTime = now;
+        fieldStudy?.update(paused);
         const total = Math.max(1, document.documentElement.scrollHeight - height);
         const pageP = clamp(scrollY / total);
         if (progress)

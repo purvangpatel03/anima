@@ -1024,3 +1024,108 @@ button:disabled {
   cursor: default;
   opacity: .5;
 }
+
+/* The field recording opens into a reversible, scroll-controlled microscope. */
+.field-scroll {
+  position: relative;
+  margin: 0 -7vw;
+  background: #e1e6c7;
+  isolation: isolate;
+  z-index: 5;
+}
+.field-scroll .film {
+  margin: 0 7vw;
+}
+.field-poster {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.field-canvas,.field-live-note {
+  display: none;
+}
+.field-scroll.is-live {
+  height: 420svh;
+}
+.is-live .field-pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+}
+.is-live .field-film {
+  --field-x: 7vw;
+  --field-y: 7vh;
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  clip-path: inset(var(--field-y) var(--field-x));
+}
+.is-live .field-poster {
+  display: none;
+}
+.is-live .field-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.is-live .field-live-note {
+  display: flex;
+  position: absolute;
+  top: var(--field-y);
+  left: var(--field-x);
+  right: var(--field-x);
+  justify-content: space-between;
+  gap: 20px;
+  padding: max(25px, env(safe-area-inset-top)) 30px 20px;
+  color: #c4d299;
+  font-size: 8px;
+  letter-spacing: .12em;
+  pointer-events: none;
+}
+.is-live .field-film figcaption {
+  left: var(--field-x);
+  right: var(--field-x);
+  transform: translateY(calc(-1 * var(--field-y)));
+  padding-bottom: max(25px, env(safe-area-inset-bottom));
+}
+.field-controls {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex: none;
+}
+.field-controls button {
+  min-height: 44px;
+}
+.field-controls [hidden] {
+  display: none;
+}
+.field-caption:focus-visible {
+  outline: 2px solid #506839;
+  outline-offset: 8px;
+}
+.field-scroll.is-live[data-static=true] {
+  height: auto;
+}
+.is-live[data-static=true] .field-pin {
+  position: relative;
+  height: 48.375vw;
+}
+.is-live[data-static=true] .field-live-note {
+  display: none;
+}
+@media(max-width:800px) {
+  .field-poster { aspect-ratio: 4 / 3; }
+  .field-scroll.is-live { height: 390svh; }
+  .is-live .field-live-note { padding: 23px 19px; font-size: 6px; letter-spacing: .06em; }
+  .field-controls { gap: 16px; }
+  .is-live .field-film figcaption { padding: 15px 19px max(15px, env(safe-area-inset-bottom)); }
+  .is-live[data-static=true] .field-pin { height: 64.5vw; }
+}
+@media(max-width:600px) {
+  .field-film figcaption { flex-wrap: wrap; gap: 8px; }
+  .field-film figcaption>.mono { width: 100%; max-width: none; font-size: 6px; }
+  .field-controls { width: 100%; justify-content: space-between; }
+  .field-controls button { font-size: 9px; }
+}
